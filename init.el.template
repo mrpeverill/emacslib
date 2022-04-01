@@ -1,0 +1,10 @@
+;;these are some paths that should be customized per system
+(setq system-user-path-emacslib "C:/Users/Matt Peverill/Dropbox/emacslib/")
+(setq system-user-path-dropbox "C:/Users/Matt Peverill/Dropbox/")
+;;set the default buffer search directory
+(setq default-directory "C:/Users/Matt Peverill/Dropbox/" )
+
+(add-to-list 'load-path system-user-path-emacslib)
+(load "commoninit.el")
+(load "windows-fonts.el")
+
