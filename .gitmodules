@@ -4,3 +4,6 @@
 [submodule "centered-window-mode"]
 	path = centered-window-mode
 	url = https://github.com/anler/centered-window-mode
+[submodule "markdown-mode"]
+	path = markdown-mode
+	url = git@github.com:jrblevin/markdown-mode.git
