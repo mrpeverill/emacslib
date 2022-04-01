@@ -1,0 +1,6 @@
+[submodule "mpages"]
+	path = mpages
+	url = git@github.com:mrpeverill/mpages.git
+[submodule "centered-window-mode"]
+	path = centered-window-mode
+	url = https://github.com/anler/centered-window-mode
