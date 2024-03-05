@@ -3,6 +3,17 @@
 (load "mpages/mpages.el")
 (load "markdown-mode/markdown-mode.el")
 
+(require 'package) ;; MELPA config
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+;; and `package-pinned-packages`. Most users will not need or want to do this.
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+
+;;Rmarkdown config
+(add-to-list 'auto-mode-alist
+             '("\\.[rR]md\\'" . poly-gfm+r-mode))
+
 ;;(autoload 'markdown-mode "markdown-mode"
 ;;   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
@@ -42,3 +53,9 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(wombat))
  '(package-selected-packages '(csv-mode)))
+
+;; Save recent files (recentf)
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 15)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
