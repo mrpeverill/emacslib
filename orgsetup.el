@@ -80,3 +80,56 @@ If NO-RECURSION is non-nil don't count the words in subsections."
 ;; set up todo workflow states.
 (setq org-todo-keywords
       '((sequence "TODO" "|" "DONE" ">>>>" "<<<<")))
+
+
+; this should be modified to just insert the heading into the daily page.
+(defun org-bujo-defer ()
+  "Set the workflow state of an Org Mode heading with status 'TODO' to '>>>>'
+and copy the entire line into the kill ring.
+The original form of the heading, still with the state 'TODO', is also captured."
+  (interactive)
+  (save-excursion
+    (org-back-to-heading t)
+    (when (looking-at org-complex-heading-regexp)
+      (let* ((element (org-element-at-point))
+             (todo-type (org-element-property :todo-type element))
+             (headline (org-element-property :raw-value element))
+             (state-change (if (eq todo-type 'todo)
+                               ">>>>"
+                             nil)))
+        (when state-change
+          (let* ((line-start (line-beginning-position))
+                 (line-end (line-end-position)))
+            (kill-new (buffer-substring-no-properties line-start line-end))
+            (kill-ring-save line-start line-end)
+            (org-todo state-change)))))))
+
+
+;; Org roam dailies template
+
+(setq org-roam-dailies-capture-templates
+      '(("d" "daily" entry "* %?"
+	 :target (file+head "%<%Y-%m-%d>.org"
+			    "#+TITLE: %<%Y-%m-%d %A>
+* Journal
+* Time
+#+BEGIN: clocktable :scope file :maxlevel 3
+#+END:
+* Agenda
+** Journal/Email
+* Deferred/Do Later"))))
+
+(defun my/org-roam-dailies-goto-today ()
+  (interactive)
+  (org-roam-dailies-goto-today "d"))
+
+(setq org-roam-capture-templates
+      '(("d" "default" plain "%?" :target
+	 (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+begindate: %U\n")
+	 :unnarrowed t)
+      ("r" "reference" plain "%?"
+         :if-new
+         (file+head "reference/${slug}.org" "#+title: ${title}\n#+author: \n#+type: \n#+begindate: %U\n#+finishdate: \n")
+         :immediate-finish f
+         :unnarrowed t)
+        ))
